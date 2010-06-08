@@ -1,0 +1,67 @@
+###
+### tcpwrappers
+###
+### $Id$
+### $URL$
+
+Overview
+========
+
+Manages hosts.allow and hosts.deny.
+
+
+Usage
+=====
+
+tcpwrappers
+-----------
+
+    include tcpwrappers
+
+Installs the default "ALL: ALL" hosts.deny entry.
+
+tcpwrappers::allow
+------------------
+
+    tcpwrappers::allow { foo:
+        daemon => "daemon",
+        client => "192.0.2.0/24";
+    }
+
+Adds the specified entry to hosts.allow. The namevar is not significant.
+
+The following parameters are available:
+
+  ensure
+    Whether the entry should be "present" or "absent".
+  daemon
+    The identifier supplied to libwrap by the daemon, often just the
+    process name.
+  client
+    The client specification to be added.
+
+The client may be specified in any of the following forms:
+
+  Domain suffix: .domain
+  IP address:    192.0.2.1
+  IP prefix:     192. 192.0. 192.0.2.
+  IP range:      192.0.2.0/24 192.0.2.0/255.255.255.0
+
+The client specification will be normalized before being compared with or
+added to the existing entries in hosts.allow.
+
+
+TODO
+====
+
+- Permit filenames as a client
+- Add an optional $except parameter to manage the EXCEPT clause
+  - Should work identically to $client, but Augeas lens must place
+    entries continaing EXCEPT on separate lines
+- Manage hosts.deny
+
+
+See also
+========
+
+hosts.allow(5)
