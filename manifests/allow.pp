@@ -48,6 +48,7 @@ define tcpwrappers::allow($daemon, $client, $ensure = present) {
 			$c = $1
 			$nm = $2
 		}
+		default: { fail("Bad client spec: ${client}") }
 	}
 
 	case $ensure {
