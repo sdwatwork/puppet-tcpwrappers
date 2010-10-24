@@ -1,55 +1,66 @@
-(* 
-Module: Tcpwrappers
-    Parses /etc/hosts.allow, /etc/hosts.deny
-
-Author: Tim Sharpe <tim.sharpe@anchor.net.au>
-
-*)
-
 module Tcpwrappers =
+	autoload xfm
 
-autoload xfm
+	let ws        = /[ \t]|\\\\\n/+
+	let any       = /[^ \n\t,:#]+/
+	let dot       = /\./
+	let at        = /@/
+	let slash     = /\//
+	let component = /[a-z0-9_-]+/
+	let fqdn      = component . ( dot . component )*
+	let wild      = /[a-z0-9_*?-]+/
+	let fqdnwild  = wild . ( dot . wild )*
+	let digits    = /(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/
+	let ipv4      = digits . dot . digits . dot . digits . dot . digits
+	let prefix    = digits . dot . ( digits . dot . ( digits . dot )? )?
+	let ipv6      = /\[/ . Rx.ipv6 . /\]/
+	let ipv6len   = /0|1([01][0-9]?|2[0-7]?|[3-9])?|[2-9][0-9]?/
+	let username  = /[a-z_.-]+/ | "UNKNOWN" | "KNOWN"
+	let netgroup  = at . any+
+	let filename  = slash . any+
+	let process   = /[a-z0-9_][a-z0-9_.-]*[a-z0-9_]|[a-z0-9_]/
+	              | "ALL"
 
-(* 
- * Group: Useful primitives
- *
- *)
+	let host      = fqdn | ipv4 | ipv6
+	let range     = dot? . fqdn
+	              | fqdnwild
+	              | ipv4 . ( slash . ipv4 )?
+	              | ipv6 . ( slash . ipv6len )?
+	              | prefix
+	              | "ALL" | "LOCAL" | "PARANOID"
 
-let eol             = Util.eol
-let comment         = Util.comment
-let empty           = Util.empty
-let opt_ws          = Util.del_opt_ws " "
-let ws              = Util.del_ws " "
-let colon           = Util.del_str ":"
-let slash           = Util.del_str "/"
-let at              = Util.del_str "@"
-let comma_and_ws    = del /,[ \t]+/ ", "
-let comma_andor_ws  = del /[ ,\t]+/ ", "
-let daemon          = /[A-Za-z0-9_\.-]+/
-let masklen_val     = store /[0-9]{1,2}/
-let ip_val          = store /([0-9]{1,3}\.){3}[0-9]{1,3}/
-let client_val      = /[^ A-Z\t\n,\/]+/
-let host_val        = store /[^ \n\t:\/]+/
-let ws_val          = /[ \t\n]+/
-let store_to_ws     = store /[^ ,\t\n]+/
+	let indent  = del ws? ""
+	let eol     = del /[ \t]*(#.*)?\n/ "\n"
+	let comment = Util.comment
+	let empty   = Util.empty
+	let list    = Build.opt_list
+	let colon   = del ( ws? . ":" . ws? ) ": "
+	let comma   = del ( ws? . "," . ws? | ws ) ", "
+	let except  = del ( ws . "EXCEPT" . ws ) " EXCEPT "
 
-let masklen         = [ label "masklen" . masklen_val ]
-let netmask         = [ label "netmask" . ip_val ]
-let bind_addr       = [ label "bind_addr" . host_val ]
-let wildcard_val    = /(ALL|LOCAL|UNKNOWN|KNOWN|PARANOID)/
-let operator        = /EXCEPT/
+	let daemon = [ label "daemon"
+	           . store ( process . ( at . host )? ) ]
+	let client = [ label "client"
+	           . store ( netgroup
+	                   | ( username . at )? . range
+	                   | filename
+	                   ) ]
 
-let except          = [ key operator . ws . store_to_ws ]
-let wildcard        = [ key wildcard_val . (ws . except)* ]
-let client          = [ key client_val . (slash . (netmask|masklen))? ]
+	let entry = [ label "entry"
+	            . indent
+	            . [ label "daemons"
+	              . list daemon comma
+	              . [ label "except" . except . list daemon comma ]? ]
+	            . colon
+	            . [ label "clients"
+	              . list client comma
+	              . [ label "except" . except . list client comma ]? ]
+	            . eol ]
 
-let clients         = [ label "clients" . (client|wildcard) . (comma_andor_ws . (client|wildcard))* ]
-let entry           = [ key daemon . (at . bind_addr)? . opt_ws . colon . opt_ws . clients . eol ]
+	let lns = ( comment | empty | entry )*
 
-let lns             = (comment|empty|entry) *
+	let filter = incl "/etc/hosts.allow"
+	           . incl "/etc/hosts.deny"
+	           . Util.stdexcl
 
-let filter          = incl "/etc/hosts.allow"
-                        . incl "/etc/hosts.deny"
-                        . Util.stdexcl
-
-let xfm             = transform lns filter
+	let xfm = transform lns filter

@@ -19,14 +19,26 @@ tcpwrappers
 Installs the default "ALL: ALL" hosts.deny entry.
 
 tcpwrappers::allow
+tcpwrappers::deny
 ------------------
 
+    # Simple client specification
     tcpwrappers::allow { foo:
         daemon => "daemon",
         client => "192.0.2.0/24";
     }
 
-Adds the specified entry to hosts.allow. The namevar is not significant.
+    # With an exception specification
+    tcpwrappers::allow { foo:
+        daemon => "daemon",
+        client => "ALL",
+        except => "/etc/hosts.deny.inc";
+    }
+
+    # tcpwrappers::deny accepts the same parameters
+
+Adds the specified entry to hosts.allow or hosts.deny respectively.
+The namevar is not significant.
 
 The following parameters are available:
 
@@ -37,26 +49,22 @@ The following parameters are available:
     process name.
   client
     The client specification to be added.
+  except (optional)
+    Another client specification, acting as a filter for the first
+    client specifiction.
 
-The client may be specified in any of the following forms:
+The $client and $except parameters must have one of the following forms:
 
-  Domain suffix: .domain
+  FQDN:          example.com
+  Domain suffix: .example.com
   IP address:    192.0.2.1
   IP prefix:     192. 192.0. 192.0.2.
   IP range:      192.0.2.0/24 192.0.2.0/255.255.255.0
+  Filename:      /path/to/file.acl
+  Keyword:       ALL LOCAL PARANOID
 
-The client specification will be normalized before being compared with or
-added to the existing entries in hosts.allow.
-
-
-TODO
-====
-
-- Permit filenames as a client
-- Add an optional $except parameter to manage the EXCEPT clause
-  - Should work identically to $client, but Augeas lens must place
-    entries continaing EXCEPT on separate lines
-- Manage hosts.deny
+The client specification will be normalized before being matched against
+or added to the existing entries in hosts.allow/hosts.deny.
 
 
 See also

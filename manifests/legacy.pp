@@ -7,9 +7,9 @@ class tcpwrappers {
 	}
 
 	# Append default deny if not already there
-	appendifnosuchline { hostsdeny:
-		line   => "ALL: ALL",
-		target => "/etc/hosts.deny";
+	tcpwrappers::deny { "tcpwrappers/deny-by-default":
+		daemon => "ALL",
+		client => "ALL";
 	}
 }
 
