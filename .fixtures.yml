@@ -1,0 +1,7 @@
+fixtures:
+  repositories:
+    "puppi": "git://github.com/example42/puppi.git"
+    "augeas": "https://github.com/camptocamp/puppet-augeas.git"
+  symlinks:
+    "tcpwrappers": "#{source_dir}"
+
