@@ -2,6 +2,7 @@ fixtures:
   repositories:
     "puppi": "git://github.com/example42/puppi.git"
     "augeas": "https://github.com/camptocamp/puppet-augeas.git"
+    "stdlib": "git://github.com/puppetlabs/puppetlabs-stdlib.git"
   symlinks:
     "tcpwrappers": "#{source_dir}"
 
