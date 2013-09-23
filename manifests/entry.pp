@@ -38,9 +38,9 @@ define tcpwrappers::entry (
   $entry = "entry[count(daemons/daemon)=1][daemons/daemon='${daemon_}'][count(daemons/except/daemon)=0]"
 
   if $except_ {
-    $key = "tcpwrappers/allow/${daemon_}:${client_}:${except_}"
+    $key = "tcpwrappers/allow/${daemon_}:${client_}:${except_}:${ensure}"
   } else {
-    $key = "tcpwrappers/allow/${daemon_}:${client_}"
+    $key = "tcpwrappers/allow/${daemon_}:${client_}:${ensure}"
   }
 
   case $ensure {
