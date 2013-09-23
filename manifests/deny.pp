@@ -1,8 +1,8 @@
 # Define tcpwrappers::deny
 
 define tcpwrappers::deny (
-  $daemon,
   $client,
+  $daemon = 'ALL',
   $ensure = present,
   $except = undef
 ) {

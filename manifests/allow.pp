@@ -1,8 +1,8 @@
 # Define tcpwrappers::allow
 
 define tcpwrappers::allow (
-  $daemon,
   $client,
+  $daemon = 'ALL',
   $ensure = present,
   $except = undef
 ) {
