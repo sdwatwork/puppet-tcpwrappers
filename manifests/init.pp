@@ -15,12 +15,13 @@
 #
 # [*source*]
 #   Sets the content of source parameter for main configuration file
-#   If defined, tcpwrappers main config file will have the param: source => $source
+#   If defined, tcpwrappers main config file will have the param:
+#   source => $source
 #   Can be defined also by the (top scope) variable $tcpwrappers_source
 #
 # [*source_dir*]
-#   If defined, the whole tcpwrappers configuration directory content is retrieved
-#   recursively from the specified source
+#   If defined, the whole tcpwrappers configuration directory content is
+#   retrieved recursively from the specified source
 #   (source => $source_dir , recurse => true)
 #   Can be defined also by the (top scope) variable $tcpwrappers_source_dir
 #
@@ -106,8 +107,6 @@ class tcpwrappers (
   $config_file_owner=$tcpwrappers::params::config_file_owner
   $config_file_group=$tcpwrappers::params::config_file_group
 
-  $bool_source_dir_purge=any2bool($source_dir_purge)
-  $bool_absent=any2bool($absent)
   $bool_audit_only=any2bool($audit_only)
   $bool_noops=any2bool($noops)
 

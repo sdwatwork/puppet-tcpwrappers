@@ -1,6 +1,7 @@
 # Class: tcpwrappers::params
 #
-# This class defines default parameters used by the main module class tcpwrappers
+# This class defines default parameters used by the main module
+# class tcpwrappers
 # Operating Systems differences in names and paths are addressed here
 #
 # == Variables
