@@ -23,7 +23,7 @@
 # [*deny_source*]
 #   Sets the content of source parameter for main configuration file
 #   If defined, tcpwrappers main config files will have the param:
-#   source => $allow_source 
+#   source => $allow_source
 #   in the case of hosts.allow or to deny_source in the case of hosts.deny.
 #
 # [*allow_template*]
@@ -63,7 +63,7 @@
 #
 # [*package*]
 #   The name of tcpwrappers package. REALLY you don't want to mess with this
-#   package, unless you know what you're doing. 
+#   package, unless you know what you're doing.
 #
 # [*config_dir*]
 #   Main configuration directory. Don't see a reason to touch it.
