@@ -42,7 +42,7 @@ I just removed the "harmful" ones, like the possibility to remove the package.
 
   are equivalent, and add an entry
 
-       ALL: 192.0.2.0/24
+        ALL: 192.0.2.0/24
 
   into */etc/hosts.allow*
 
@@ -55,10 +55,33 @@ I just removed the "harmful" ones, like the possibility to remove the package.
 
   Adds an entry
 
-       daemon: ALL EXCEPT "/etc/hosts.deny.inc"
+        daemon: ALL EXCEPT "/etc/hosts.deny.inc"
 
 
   tcpwrappers::deny accepts the same parameters
+
+  The following parameters are available:
+
+  * *ensure*: Whether the entry should be "present" or "absent".
+  * *daemon*: The identifier supplied to libwrap by the daemon, often just the
+              process name.
+  * *client*: The client specification to be added.
+  * *except* (optional): Another client specification, acting as a filter for the first
+             client specifiction.
+
+  The $client and $except parameters must have one of the following forms:
+
+        FQDN:          example.com
+        Domain suffix: .example.com
+        IP address:    192.0.2.1
+        IP prefix:     192. 192.0. 192.0.2.
+        IP range:      192.0.2.0/24 192.0.2.0/255.255.255.0
+        Filename:      /path/to/file.acl
+        Keyword:       ALL LOCAL PARANOID
+
+   The client specification will be normalized before being matched against
+   or added to the existing entries in hosts.allow/hosts.deny.
+
 
 * Install a specific version of tcpwrappers package
 
