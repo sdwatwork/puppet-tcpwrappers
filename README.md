@@ -1,11 +1,12 @@
 # Puppet module: tcpwrappers
 
 This is a Puppet module for tcpwrappers
-It provides only package installation and file configuration.
+
+It provides only package installation and file configuration (hosts.allow / hosts.deny).
 
 Based on 
 
-* TCPWrappers puppet module created by Anchor Systems (https://github.com/wido/puppet-module-tcpwrappers)
+* TCPWrappers puppet module created by Anchor Systems (https://github.com/wido/puppet-module-tcpwrappers), from where the main logic was taken.
 
 * Example42 layouts by Alessandro Franceschi / Lab42
 
@@ -15,18 +16,49 @@ Official git repository: http://github.com/netmanagers/puppet-tcpwrappers
 
 Released under the terms of Apache 2 License.
 
-This module requires the presence of Example42 Puppi module in your modulepath.
-
-
 ## USAGE - Basic management
 
-TCP wrappers are installed by default in almost every Linux system around, so you'll rarely use
+TCP wrappers are installed by default in almost every Linux system around and you'll rarely use
 this capabilities, but they are provided by every Example42 module, so they are available here too.
 I just removed the "harmful" ones, like the possibility to remove the package.
 
 * Install tcpwrappers with default settings
 
         class { 'tcpwrappers': }
+
+* Managing entries in */etc/hosts.allow* and */etc/hosts.deny*.
+  
+  Parameters *daemon* defaults to **ALL** and *client* defaults to **$title** if not specified.
+
+        # Simple client specification
+        tcpwrappers::allow { '192.0.2.0/24': }
+
+  and
+
+        tcpwrappers::allow { foo:
+          daemon => "ALL",
+          client => "192.0.2.0/24";
+        }
+
+  are equivalent, and add an entry
+
+       ALL: 192.0.2.0/24
+
+  into */etc/hosts.allow*
+
+        # With an exception specification
+        tcpwrappers::allow { foo:
+          daemon => "daemon",
+          client => "ALL",
+          except => "/etc/hosts.deny.inc";
+        }
+
+  Adds an entry
+
+       daemon: ALL EXCEPT "/etc/hosts.deny.inc"
+
+
+  tcpwrappers::deny accepts the same parameters
 
 * Install a specific version of tcpwrappers package
 
@@ -51,22 +83,20 @@ I just removed the "harmful" ones, like the possibility to remove the package.
 * Use custom sources for main config file 
 
         class { 'tcpwrappers':
-          source => [ "puppet:///modules/netmanagers/tcpwrappers/tcpwrappers.conf-${hostname}" , "puppet:///modules/netmanagers/tcpwrappers/tcpwrappers.conf" ], 
+          allow_source => [ "puppet:///modules/netmanagers/tcpwrappers/hosts_allow-${hostname}" ,
+                            "puppet:///modules/netmanagers/tcpwrappers/hosts_allow.conf" ], 
+          deny_source  => [ "puppet:///modules/netmanagers/tcpwrappers/hosts_deny-${hostname}" ,
+                            "puppet:///modules/netmanagers/tcpwrappers/hosts_allow.conf" ], 
         }
 
-
-* Use custom source directory for the whole configuration dir
-
-        class { 'tcpwrappers':
-          source_dir       => 'puppet:///modules/netmanagers/tcpwrappers/conf/',
-          source_dir_purge => false, # Set to true to purge any existing file not present in $source_dir
-        }
 
 * Use custom template for main config file. Note that template and source arguments are alternative. 
 
         class { 'tcpwrappers':
-          template => 'netmanagers/tcpwrappers/tcpwrappers.conf.erb',
+          allow_template => 'netmanagers/tcpwrappers/hosts_allow.erb',
         }
+
+  and provide custom values using the "$options" parameter.
 
 * Automatically include a custom subclass
 

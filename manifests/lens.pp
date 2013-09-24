@@ -1,5 +1,8 @@
 # Class tcpwrappers::lens
-
+#
+# This entry adds the lens for augeas.
+# Requires augeas module.
+#
 class tcpwrappers::lens {
 
   include tcpwrappers

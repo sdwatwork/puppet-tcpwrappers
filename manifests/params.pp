@@ -2,6 +2,7 @@
 #
 # This class defines default parameters used by the main module
 # class tcpwrappers
+#
 # Operating Systems differences in names and paths are addressed here
 #
 # == Variables
@@ -58,5 +59,4 @@ class tcpwrappers::params {
   $version = 'present'
   $audit_only = false
   $noops = false
-
 }

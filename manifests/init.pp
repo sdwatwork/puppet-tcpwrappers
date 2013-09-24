@@ -11,31 +11,27 @@
 # [*my_class*]
 #   Name of a custom class to autoload to manage module's customizations
 #   If defined, tcpwrappers class will automatically "include $my_class"
-#   Can be defined also by the (top scope) variable $tcpwrappers_myclass
+#   Can be defined also by the (top scope) variable $tcpwrappers_my_class
 #
-# [*source*]
+# [*allow_file*]
+# [*deny_file*]
+#   Main configuration file for allow/deny.
+#   Default: /etc/hosts.allow
+#            /etc/hosts.deny
+#
+# [*allow_source*]
+# [*deny_source*]
 #   Sets the content of source parameter for main configuration file
-#   If defined, tcpwrappers main config file will have the param:
-#   source => $source
-#   Can be defined also by the (top scope) variable $tcpwrappers_source
+#   If defined, tcpwrappers main config files will have the param:
+#   source => $allow_source 
+#   in the case of hosts.allow or to deny_source in the case of hosts.deny.
 #
-# [*source_dir*]
-#   If defined, the whole tcpwrappers configuration directory content is
-#   retrieved recursively from the specified source
-#   (source => $source_dir , recurse => true)
-#   Can be defined also by the (top scope) variable $tcpwrappers_source_dir
-#
-# [*source_dir_purge*]
-#   If set to true (default false) the existing configuration directory is
-#   mirrored with the content retrieved from source_dir
-#   (source => $source_dir , recurse => true , purge => true)
-#   Can be defined also by the (top scope) variable $tcpwrappers_source_dir_purge
-#
-# [*template*]
+# [*allow_template*]
+# [*deny_template*]
 #   Sets the path to the template to use as content for main configuration file
 #   If defined, tcpwrappers main config file has: content => content("$template")
 #   Note source and template parameters are mutually exclusive: don't use both
-#   Can be defined also by the (top scope) variable $tcpwrappers_template
+#   No templates are provided with the module.
 #
 # [*options*]
 #   An hash of custom options to be used in templates for arbitrary settings.
@@ -46,10 +42,6 @@
 #   Default: present. Can be 'latest' or a specific version number.
 #   Note that if the argument absent (see below) is set to true, the
 #   package is removed, whatever the value of version parameter.
-#
-# [*absent*]
-#   Set to 'true' to remove package(s) installed by module
-#   Can be defined also by the (top scope) variable $tcpwrappers_absent
 #
 # [*audit_only*]
 #   Set to 'true' if you don't intend to override existing configuration files
@@ -70,13 +62,13 @@
 # Note also that you can't override/set them via top scope variables.
 #
 # [*package*]
-#   The name of tcpwrappers package
+#   The name of tcpwrappers package. REALLY you don't want to mess with this
+#   package, unless you know what you're doing. 
 #
 # [*config_dir*]
-#   Main configuration directory. Used by puppi
+#   Main configuration directory. Don't see a reason to touch it.
+#   Default: /etc
 #
-# [*config_file*]
-#   Main configuration file path
 #
 # == Examples
 #

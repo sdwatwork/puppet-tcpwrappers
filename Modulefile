@@ -1,5 +1,5 @@
 name    'netmanagers-tcpwrappers'
-version '0.0.1'
+version '0.0.2'
 author  'Javier Bértoli'
 license 'Apache2'
 project_page 'http://www.netmanagers.com'

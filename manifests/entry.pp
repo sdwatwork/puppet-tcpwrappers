@@ -1,4 +1,9 @@
 # Define tcpwrappers::entry
+#
+# This define modifies the entries in hosts.allow/hosts.deny and
+# is called by "allow.pp" and "deny.pp" which should be called instead of
+# this directly.
+#
 define tcpwrappers::entry (
   $type,
   $daemon,
