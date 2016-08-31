@@ -19,13 +19,13 @@ define tcpwrappers::entry (
     default: { fail("Invalid type: ${type}") }
   }
 
+  # Requires stdlib >= 2.3.0
+  $module_path = get_module_path($module_name)
+
   Augeas {
-    incl       => "/etc/hosts.${type}",
-    lens       => 'Tcpwrappers.lns',
-    load_path  => [
-      '/vagrant/modules/tcpwrappers/lib/augeas/lenses',
-      "/tmp/vagrant-puppet/environments/${::environment}/modules/tcpwrappers/lib/augeas/lenses",
-    ]
+    incl      => "/etc/hosts.${type}",
+    lens      => 'Tcpwrappers.lns',
+    load_path => "${module_path}/lib/augeas/lenses",
   }
 
   if $daemon =~ /^(?:\w[\w.-]*\w|\w)$/ {
