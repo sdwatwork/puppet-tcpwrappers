@@ -20,8 +20,12 @@ define tcpwrappers::entry (
   }
 
   Augeas {
-    incl => "/etc/hosts.${type}",
-    lens => 'Tcpwrappers.lns',
+    incl       => "/etc/hosts.${type}",
+    lens       => 'Tcpwrappers.lns',
+    load_path  => [
+      '/vagrant/modules/tcpwrappers/lib/augeas/lenses',
+      "/tmp/vagrant-puppet/environments/${::environment}/modules/tcpwrappers/lib/augeas/lenses",
+    ]
   }
 
   if $daemon =~ /^(?:\w[\w.-]*\w|\w)$/ {
