@@ -1,0 +1,47 @@
+{
+  "name": "netmanagers-tcpwrappers",
+  "version": "1.0.0",
+  "author": "Javier Bértoli",
+  "summary": "Puppet module for managing tcpwrappers",
+  "license": "GPL-3.0+",
+  "source": "https://github.com/netmanagers/puppet-tcpwrappers.git",
+  "project_page": "https://github.com/netmanagers/puppet-tcpwrappers",
+  "issues_url": "https://github.com/netmanagers/puppet-tcpwrappers/issues",
+  "description": "This module installs and manages tcpwrappers. Check README for details.",
+  "dependencies": [
+    {"name": "example42/puppi", "version_requirement": ">= 2.0.0 < 3.0.0"},
+    {"name": "puppetlabs/stdlib", "version_requirement": ">= 2.3.0 < 5.0.0"}
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": ["5", "6", "7"]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": ["5", "6", "7"]
+    },
+    {
+      "operatingsystem": "OracleLinux",
+      "operatingsystemrelease": ["5", "6", "7"]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": ["7", "8"]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": ["12.04", "14.04"]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": ">= 3.0.0 < 5.0.0"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": ">= 3.0.0 < 5.0.0"
+    }
+  ]
+}

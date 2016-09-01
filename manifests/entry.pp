@@ -12,17 +12,20 @@ define tcpwrappers::entry (
   $except = undef
 ) {
 
-  include tcpwrappers::lens
+  include tcpwrappers
 
   case $type {
     'allow','deny': {}
     default: { fail("Invalid type: ${type}") }
   }
 
+  # Requires stdlib >= 2.3.0
+  $module_path = get_module_path($module_name)
+
   Augeas {
-    incl    => "/etc/hosts.${type}",
-    lens    => 'Tcpwrappers.lns',
-    require => File['tcpwrappers.lens'],
+    incl      => "/etc/hosts.${type}",
+    lens      => 'Tcpwrappers.lns',
+    load_path => "${module_path}/lib/augeas/lenses",
   }
 
   if $daemon =~ /^(?:\w[\w.-]*\w|\w)$/ {
