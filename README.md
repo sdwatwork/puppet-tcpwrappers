@@ -1,19 +1,13 @@
-# Puppet module: tcpwrappers
+tcpwrappers
+=============
 
-## [Maintainer wanted](https://github.com/netmanagers/puppet-tcpwrappers/issues/new)
+[![Build Status](https://travis-ci.org/MiamiOH/puppet-tcpwrappers.svg)](https://travis-ci.org/MiamiOH/puppet-tcpwrappers)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/MiamiOH/tcpwrappers.svg)](https://forge.puppet.com/MiamiOH/tcpwrappers)
+[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/MiamiOH/tcpwrappers.svg)](https://forge.puppet.com/MiamiOH/tcpwrappers)
+[![Puppet Forge Score](https://img.shields.io/puppetforge/f/MiamiOH/tcpwrappers.svg)](https://forge.puppet.com/MiamiOH/tcpwrappers/scores)
 
-**WARNING WARNING WARNING**
-
-[puppet-tcpwrappers](https://github.com/netmanagers/puppet-tcpwrappers) is not currently being maintained, 
-and may have unresolved issues or not be up-to-date. 
-
-I'm still using it on a daily basis (with Puppet 3.8.5) and fixing issues I find
-while using it. But sadly, I don't have the time required to actively add new features,
-fix issues other people report or port it to Puppet 4.x.
-
-If you would like to maintain this module,
-please create an issue at: https://github.com/netmanagers/puppet-tcpwrappers/issues
-offering yourself.
+Formerly:
+[netmanagers/puppet-tcpwrappers](https://github.com/netmanagers/puppet-tcpwrappers)
 
 ## Getting started
 
@@ -21,7 +15,7 @@ This is a Puppet module for tcpwrappers
 
 It provides only package installation and file configuration (hosts.allow / hosts.deny).
 
-Based on 
+Based on:
 
 * TCPWrappers puppet module created by Anchor Systems (https://github.com/wido/puppet-module-tcpwrappers), from where the main logic was taken.
 
@@ -30,8 +24,6 @@ Based on
 Official site: http://www.netmanagers.com.ar
 
 Official git repository: http://github.com/netmanagers/puppet-tcpwrappers
-
-Released under the terms of Apache 2 License.
 
 ## USAGE - Basic management
 
@@ -44,7 +36,7 @@ I just removed the "harmful" ones, like the possibility to remove the package.
         class { 'tcpwrappers': }
 
 * Managing entries in */etc/hosts.allow* and */etc/hosts.deny*.
-  
+
   Parameters *daemon* defaults to **ALL** and *client* defaults to **$title** if not specified.
 
         # Simple client specification
@@ -120,17 +112,17 @@ I just removed the "harmful" ones, like the possibility to remove the package.
 
 
 ## USAGE - Overrides and Customizations
-* Use custom sources for main config file 
+* Use custom sources for main config file
 
         class { 'tcpwrappers':
-          allow_source => [ "puppet:///modules/netmanagers/tcpwrappers/hosts_allow-${hostname}" ,
-                            "puppet:///modules/netmanagers/tcpwrappers/hosts_allow.conf" ], 
-          deny_source  => [ "puppet:///modules/netmanagers/tcpwrappers/hosts_deny-${hostname}" ,
-                            "puppet:///modules/netmanagers/tcpwrappers/hosts_allow.conf" ], 
+          allow_source => [ "puppet:///modules/netmanagers/tcpwrappers/hosts_allow-${hostname}",
+                            "puppet:///modules/netmanagers/tcpwrappers/hosts_allow.conf" ],
+          deny_source  => [ "puppet:///modules/netmanagers/tcpwrappers/hosts_deny-${hostname}",
+                            "puppet:///modules/netmanagers/tcpwrappers/hosts_allow.conf" ],
         }
 
 
-* Use custom template for main config file. Note that template and source arguments are alternative. 
+* Use custom template for main config file. Note that template and source arguments are alternative.
 
         class { 'tcpwrappers':
           allow_template => 'netmanagers/tcpwrappers/hosts_allow.erb',
@@ -143,8 +135,3 @@ I just removed the "harmful" ones, like the possibility to remove the package.
         class { 'tcpwrappers':
           my_class => 'netmanagers::my_tcpwrappers',
         }
-
-
-
-## TESTING
-[![Build Status](https://travis-ci.org/netmanagers/puppet-tcpwrappers.png?branch=master)](https://travis-ci.org/netmanagers/puppet-tcpwrappers)
