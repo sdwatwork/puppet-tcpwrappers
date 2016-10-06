@@ -1,16 +1,17 @@
 {
-  "name": "netmanagers-tcpwrappers",
+  "name": "MiamiOH-tcpwrappers",
   "version": "1.0.0",
-  "author": "Javier Bértoli",
+  "author": "Javier Bértoli, Miami University Information Technology",
   "summary": "Puppet module for managing tcpwrappers with Augeas",
   "license": "GPL-3.0+",
   "source": "https://github.com/MiamiOH/puppet-tcpwrappers.git",
   "project_page": "https://github.com/MiamiOH/puppet-tcpwrappers",
   "issues_url": "https://github.com/MiamiOH/puppet-tcpwrappers/issues",
+  "tags": ["tcpwrappers", "hosts.allow", "hosts.deny"],
   "description": "This module installs and manages tcpwrappers. Check README for details.",
   "dependencies": [
-    {"name": "example42/puppi", "version_requirement": ">= 2.0.0 < 3.0.0"},
-    {"name": "puppetlabs/stdlib", "version_requirement": ">= 2.3.0 < 5.0.0"}
+    {"name": "puppetlabs/stdlib", "version_requirement": ">= 2.3.0 < 5.0.0"},
+    {"name": "example42/puppi", "version_requirement": ">= 2.0.0 < 3.0.0"}
   ],
   "operatingsystem_support": [
     {

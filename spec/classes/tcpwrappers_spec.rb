@@ -1,4 +1,4 @@
-require "#{File.join(File.dirname(__FILE__),'..','spec_helper.rb')}"
+require 'spec_helper'
 
 describe 'tcpwrappers' do
 
@@ -30,7 +30,7 @@ describe 'tcpwrappers' do
 
   describe 'Test customizations - template' do
     let(:params) do
-      { 
+      {
         :allow_template => "tcpwrappers/spec.erb",
         :options => { 'opt_b' => 'value_b' }
       }

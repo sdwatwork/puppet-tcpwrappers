@@ -23,8 +23,6 @@ Based on:
 
 Official site: http://www.netmanagers.com.ar
 
-Official git repository: http://github.com/netmanagers/puppet-tcpwrappers
-
 ## USAGE - Basic management
 
 TCP wrappers are installed by default in almost every Linux system around and you'll rarely use
