@@ -93,7 +93,7 @@ class tcpwrappers (
   $noops               = params_lookup( 'noops' ),
   $package             = params_lookup( 'package' ),
   $config_dir          = params_lookup( 'config_dir' )
-  ) inherits tcpwrappers::params {
+) inherits tcpwrappers::params {
 
   $config_file_mode=$tcpwrappers::params::config_file_mode
   $config_file_owner=$tcpwrappers::params::config_file_owner
@@ -142,8 +142,8 @@ class tcpwrappers (
 
   ### Managed resources
   package { $tcpwrappers::package:
-    ensure  => $tcpwrappers::manage_package,
-    noop    => $tcpwrappers::bool_noops,
+    ensure => $tcpwrappers::manage_package,
+    noop   => $tcpwrappers::bool_noops,
   }
 
   file { 'allow.file':

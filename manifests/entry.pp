@@ -12,7 +12,7 @@ define tcpwrappers::entry (
   $except = undef
 ) {
 
-  include tcpwrappers
+  include '::tcpwrappers'
 
   case $type {
     'allow','deny': {}
@@ -52,7 +52,7 @@ define tcpwrappers::entry (
   }
 
   case $ensure {
-    present: {
+    'present': {
       # If the new item is to be added with no client
       # exception, start by removing the client from
       # any entry where it appears with an exception
@@ -92,17 +92,17 @@ define tcpwrappers::entry (
       }
 
       augeas { "${key}/new":
-          changes => flatten([$create_cmds, $extra_create_cmds]),
-          onlyif  => "match ${key_entry} size == 0",
+        changes => flatten([$create_cmds, $extra_create_cmds]),
+        onlyif  => "match ${key_entry} size == 0",
       }
 
       augeas { $key:
-          changes => "set ${key_entry}/clients/client[.='${client_}'] '${client_}'",
-          onlyif  => "match ${key_entry}/clients/client[.='${client_}'] size == 0",
-          require => Augeas["${key}/new"],
+        changes => "set ${key_entry}/clients/client[.='${client_}'] '${client_}'",
+        onlyif  => "match ${key_entry}/clients/client[.='${client_}'] size == 0",
+        require => Augeas["${key}/new"],
       }
     }
-    absent: {
+    'absent': {
       # If this resource is not given a client exception,
       # remove the client from all entries, otherwise find
       # the entry with a matching client exception list.

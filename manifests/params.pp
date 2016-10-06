@@ -20,15 +20,15 @@ class tcpwrappers::params {
     default => '/etc/hosts.allow',
   }
 
-  $allow_source = ''
-  $allow_template = ''
+  $allow_source   = '' # lint:ignore:empty_string_assignment
+  $allow_template = '' # lint:ignore:empty_string_assignment
 
   $deny_file = $::operatingsystem ? {
     default => '/etc/hosts.deny',
   }
 
-  $deny_template = ''
-  $deny_source = ''
+  $deny_template = '' # lint:ignore:empty_string_assignment
+  $deny_source   = '' # lint:ignore:empty_string_assignment
 
   ### Application related parameters
 
@@ -54,9 +54,9 @@ class tcpwrappers::params {
   }
 
   # General Settings
-  $my_class = ''
-  $options = ''
-  $version = 'present'
+  $my_class = '' # lint:ignore:empty_string_assignment
+  $options  = '' # lint:ignore:empty_string_assignment
+  $version  = 'present'
   $audit_only = false
   $noops = false
 }

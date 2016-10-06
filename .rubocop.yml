@@ -22,7 +22,10 @@ AllCops:
 
 Metrics/LineLength:
   # Ruduce this... Max: 80
-  Max: 111
+  Max: 155
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
 
 # Cop supports --auto-correct.
 # Configuration parameters: SupportedStyles.
