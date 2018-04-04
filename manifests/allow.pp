@@ -1,10 +1,10 @@
 # Define tcpwrappers::allow
 
 define tcpwrappers::allow (
-  $client = $title,
-  $daemon = 'ALL',
-  $ensure = present,
-  $except = undef
+  String                   $client = $title,
+  String                   $daemon = 'ALL',
+  Pattern[absent, present] $ensure = present,
+  Optional[String]         $except = undef
 ) {
   tcpwrappers::entry { $name:
     ensure => $ensure,

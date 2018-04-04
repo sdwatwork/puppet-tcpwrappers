@@ -6,25 +6,25 @@ describe 'tcpwrappers' do
   let(:facts) { { :ipaddress => '10.42.42.42', :operatingsystem => 'Debian' } }
 
   describe 'Test minimal installation' do
-    it { should contain_package('libwrap0').with_ensure('present') }
-    it { should contain_file('allow.file').with_ensure('present') }
-    it { should contain_file('deny.file').with_ensure('present') }
+    it { is_expected.to contain_package('libwrap0').with_ensure('present') }
+    it { is_expected.to contain_file('allow.file').with_ensure('present') }
+    it { is_expected.to contain_file('deny.file').with_ensure('present') }
   end
 
   describe 'Test minimal installation - CentOS' do
     let(:facts) { { :operatingsystem => 'Centos' } }
-    it { should contain_package('setup').with_ensure('present') }
+    it { is_expected.to contain_package('setup').with_ensure('present') }
   end
 
   describe 'Test installation of a specific version' do
     let(:params) { { :version => '1.0.42' } }
-    it { should contain_package('libwrap0').with_ensure('1.0.42') }
+    it { is_expected.to contain_package('libwrap0').with_ensure('1.0.42') }
   end
 
   describe 'Test noops mode' do
     let(:params) { { :noops => true } }
-    it { should contain_package('libwrap0').with_noop('true') }
-    it { should contain_file('allow.file').with_noop('true') }
+    it { is_expected.to contain_package('libwrap0').with_noop('true') }
+    it { is_expected.to contain_file('allow.file').with_noop('true') }
   end
 
   describe 'Test customizations - template' do
@@ -36,11 +36,11 @@ describe 'tcpwrappers' do
     end
     it 'should generate a valid template' do
       content = catalogue.resource('file', 'allow.file').send(:parameters)[:content]
-      content.should match 'fqdn: rspec.example42.com'
+      expect(content).to match 'fqdn: rspec.example42.com'
     end
     it 'should generate a template that uses custom options' do
       content = catalogue.resource('file', 'allow.file').send(:parameters)[:content]
-      content.should match 'value_b'
+      expect(content).to match 'value_b'
     end
   end
 
@@ -51,12 +51,12 @@ describe 'tcpwrappers' do
         :deny_source => 'puppet:///modules/tcpwrappers/spec'
       }
     end
-    it { should contain_file('allow.file').with_source('puppet:///modules/tcpwrappers/spec') }
-    it { should contain_file('deny.file').with_source('puppet:///modules/tcpwrappers/spec') }
+    it { is_expected.to contain_file('allow.file').with_source('puppet:///modules/tcpwrappers/spec') }
+    it { is_expected.to contain_file('deny.file').with_source('puppet:///modules/tcpwrappers/spec') }
   end
 
   describe 'Test customizations - custom class' do
     let(:params) { { :my_class => 'tcpwrappers::spec' } }
-    it { should contain_file('allow.file').with_content(/rspec.example42.com/) }
+    it { is_expected.to contain_file('allow.file').with_content(/rspec.example42.com/) }
   end
 end
