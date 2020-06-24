@@ -39,11 +39,23 @@ jobs:
       rvm: 2.5.7
       stage: spec
     -
+      env: PUPPET_GEM_VERSION="~> 5.0" CHECK=build DEPLOY_TO_FORGE=yes
+    -
       env: DEPLOY_TO_FORGE=yes
       stage: deploy
 branches:
   only:
     - master
     - /^v\d/
+    - /^\d/
 notifications:
   email: false
+deploy:
+  provider: puppetforge
+  username: MiamiOH
+  password:
+    secure: "RMGe+qbnUvk2tM7bXlLObXjlNB+C1cyHOU3FGJS0GdESVkdI6Wne66Y6tI5XPlWkI4UA0YWU/38fJllLuOdbKooNg5XOefocc5PQbmDbi8A7jRYMiZx7J9lblJKqb0HspmVsrWzz1Ss8l/UmkQWWAUAHU4yHTPquqFQV19CZytE="
+  on:
+    tags: true
+    all_branches: true
+    condition: "$DEPLOY_TO_FORGE = yes"
