@@ -2,7 +2,7 @@ require 'ipaddr'
 
 #
 module Puppet::Parser::Functions
-  newfunction(:normalize_tcpwrappers_client, :type => :rvalue, :doc => 'Converts the argument into a TCP Wrappers-friendly client specification') do |args|
+  newfunction(:normalize_tcpwrappers_client, type: :rvalue, doc: 'Converts the argument into a TCP Wrappers-friendly client specification') do |args|
     unless args.length == 1
       raise Puppet::ParseError, 'normalize_tcpwrappers_client: excepting 1 argument'
     end
@@ -26,7 +26,7 @@ module Puppet::Parser::Functions
       ip      = IPAddr.new(ip).mask(masklen).to_s
       netmask = IPAddr.new('255.255.255.255').mask(masklen).to_s
       "#{ip}/#{netmask}"
-    when /^\.?[a-z\d_.]+$/, %r{^/[^ \n\t,:#]+$}, 'ALL', 'LOCAL', 'PARANOID'
+    when %r{/^\.?[a-z\d_.]+$}, %r{^/[^ \n\t,:#]+$}, 'ALL', 'LOCAL', 'PARANOID'
       # Hostname, FQDN, suffix, filename, keyword, etc.
       client
     else
