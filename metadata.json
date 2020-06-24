@@ -1,6 +1,6 @@
 {
   "name": "MiamiOH-tcpwrappers",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "author": "Javier Bértoli, Miami University Information Technology",
   "summary": "Puppet module for managing tcpwrappers with Augeas",
   "license": "GPL-3.0+",
@@ -36,10 +36,6 @@
     }
   ],
   "requirements": [
-    {
-      "name": "pe",
-      "version_requirement": ">= 3.0.0 < 5.0.0"
-    },
     {
       "name": "puppet",
       "version_requirement": ">= 3.0.0 < 5.0.0"

@@ -5,19 +5,14 @@
 # this directly.
 #
 define tcpwrappers::entry (
-  $type,
-  $daemon,
-  $client,
-  $ensure = present,
-  $except = undef
+  Pattern['allow','deny']         $type,
+  Pattern[/^(?:\w[\w.-]*\w|\w)$/] $daemon,
+  String                          $client,
+  Pattern[present, absent]        $ensure = present,
+  Optional[String]                $except = undef
 ) {
 
   include '::tcpwrappers'
-
-  case $type {
-    'allow','deny': {}
-    default: { fail("Invalid type: ${type}") }
-  }
 
   # Requires stdlib >= 2.3.0
   $module_path = get_module_path($module_name)
@@ -26,12 +21,6 @@ define tcpwrappers::entry (
     incl      => "/etc/hosts.${type}",
     lens      => 'Tcpwrappers.lns',
     load_path => "${module_path}/lib/augeas/lenses",
-  }
-
-  if $daemon =~ /^(?:\w[\w.-]*\w|\w)$/ {
-    $daemon_ = $daemon
-  } else {
-    fail("Invalid daemon: ${daemon}")
   }
 
   $client_ = normalize_tcpwrappers_client($client)
@@ -43,12 +32,12 @@ define tcpwrappers::entry (
   }
 
   # Only look at an entry with a single daemon and no daemon exceptions.
-  $entry = "entry[count(daemons/daemon)=1][daemons/daemon='${daemon_}'][count(daemons/except/daemon)=0]"
+  $entry = "entry[count(daemons/daemon)=1][daemons/daemon='${daemon}'][count(daemons/except/daemon)=0]"
 
   if $except_ {
-    $key = "tcpwrappers/allow/${daemon_}:${client_}:${except_}:${ensure}"
+    $key = "tcpwrappers/allow/${daemon}:${client_}:${except_}:${ensure}"
   } else {
-    $key = "tcpwrappers/allow/${daemon_}:${client_}:${ensure}"
+    $key = "tcpwrappers/allow/${daemon}:${client_}:${ensure}"
   }
 
   case $ensure {
@@ -82,7 +71,7 @@ define tcpwrappers::entry (
 
       $create_cmds = [
         'clear entry[0]',
-        "set entry[last()]/daemons/daemon '${daemon_}'",
+        "set entry[last()]/daemons/daemon '${daemon}'",
         "set entry[last()]/clients/client '${client_}'",
       ]
       if $except_ {

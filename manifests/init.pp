@@ -80,27 +80,24 @@
 #
 #
 class tcpwrappers (
-  $my_class            = params_lookup( 'my_class' ),
-  $allow_file          = params_lookup( 'allow_file' ),
-  $allow_source        = params_lookup( 'allow_source' ),
-  $deny_source         = params_lookup( 'deny_source' ),
-  $deny_file           = params_lookup( 'deny_file' ),
-  $allow_template      = params_lookup( 'allow_template' ),
-  $deny_template       = params_lookup( 'deny_template' ),
-  $options             = params_lookup( 'options' ),
-  $version             = params_lookup( 'version' ),
-  $audit_only          = params_lookup( 'audit_only' , 'global' ),
-  $noops               = params_lookup( 'noops' ),
-  $package             = params_lookup( 'package' ),
-  $config_dir          = params_lookup( 'config_dir' )
+  String                $my_class       = params_lookup( 'my_class' ),
+  String                $allow_file     = params_lookup( 'allow_file' ),
+  String                $allow_source   = params_lookup( 'allow_source' ),
+  String                $deny_source    = params_lookup( 'deny_source' ),
+  String                $deny_file      = params_lookup( 'deny_file' ),
+  String                $allow_template = params_lookup( 'allow_template' ),
+  String                $deny_template  = params_lookup( 'deny_template' ),
+  Variant[String, Hash] $options        = params_lookup( 'options' ),
+  String                $version        = params_lookup( 'version' ),
+  Boolean               $audit_only     = params_lookup( 'audit_only' , 'global' ),
+  Boolean               $noops          = params_lookup( 'noops' ),
+  String                $package        = params_lookup( 'package' ),
+  String                $config_dir     = params_lookup( 'config_dir' )
 ) inherits tcpwrappers::params {
 
-  $config_file_mode=$tcpwrappers::params::config_file_mode
-  $config_file_owner=$tcpwrappers::params::config_file_owner
-  $config_file_group=$tcpwrappers::params::config_file_group
-
-  $bool_audit_only=any2bool($audit_only)
-  $bool_noops=any2bool($noops)
+  $config_file_mode  = $tcpwrappers::params::config_file_mode
+  $config_file_owner = $tcpwrappers::params::config_file_owner
+  $config_file_group = $tcpwrappers::params::config_file_group
 
   ### Definition of some variables used in the module
   $manage_package = $tcpwrappers::version ? {
@@ -110,12 +107,12 @@ class tcpwrappers (
 
   $manage_file = 'present'
 
-  $manage_audit = $tcpwrappers::bool_audit_only ? {
+  $manage_audit = $tcpwrappers::audit_only ? {
     true  => 'all',
     false => undef,
   }
 
-  $manage_file_replace = $tcpwrappers::bool_audit_only ? {
+  $manage_file_replace = $tcpwrappers::audit_only ? {
     true  => false,
     false => true,
   }
@@ -143,7 +140,7 @@ class tcpwrappers (
   ### Managed resources
   package { $tcpwrappers::package:
     ensure => $tcpwrappers::manage_package,
-    noop   => $tcpwrappers::bool_noops,
+    noop   => $tcpwrappers::noops,
   }
 
   file { 'allow.file':
@@ -157,7 +154,7 @@ class tcpwrappers (
     content => $tcpwrappers::manage_allow_file_content,
     replace => $tcpwrappers::manage_file_replace,
     audit   => $tcpwrappers::manage_audit,
-    noop    => $tcpwrappers::bool_noops,
+    noop    => $tcpwrappers::noops,
   }
 
   file { 'deny.file':
@@ -171,11 +168,11 @@ class tcpwrappers (
     content => $tcpwrappers::manage_deny_file_content,
     replace => $tcpwrappers::manage_file_replace,
     audit   => $tcpwrappers::manage_audit,
-    noop    => $tcpwrappers::bool_noops,
+    noop    => $tcpwrappers::noops,
   }
 
   ### Include custom class if $my_class is set
-  if $tcpwrappers::my_class {
+  if $tcpwrappers::my_class != '' {
     include $tcpwrappers::my_class
   }
 
