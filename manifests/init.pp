@@ -99,7 +99,7 @@ class tcpwrappers (
   $config_file_owner = $tcpwrappers::params::config_file_owner
   $config_file_group = $tcpwrappers::params::config_file_group
 
-  ### Definition of some variables used in the module
+  # Definition of some variables used in the module
   $manage_package = $tcpwrappers::version ? {
     ''      => 'present',
     default => $tcpwrappers::version,
@@ -137,7 +137,7 @@ class tcpwrappers (
     default   => template($tcpwrappers::deny_template),
   }
 
-  ### Managed resources
+  # Managed resources
   package { $tcpwrappers::package:
     ensure => $tcpwrappers::manage_package,
     noop   => $tcpwrappers::noops,
@@ -171,7 +171,7 @@ class tcpwrappers (
     noop    => $tcpwrappers::noops,
   }
 
-  ### Include custom class if $my_class is set
+  # Include custom class if $my_class is set
   if $tcpwrappers::my_class != '' {
     include $tcpwrappers::my_class
   }
