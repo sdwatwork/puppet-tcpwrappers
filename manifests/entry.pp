@@ -5,14 +5,14 @@
 # this directly.
 #
 define tcpwrappers::entry (
-  Pattern['allow','deny']         $type,
+  Pattern['allow', 'deny']         $type,
   Pattern[/^(?:\w[\w.-]*\w|\w)$/] $daemon,
   String                          $client,
   Pattern[present, absent]        $ensure = present,
   Optional[String]                $except = undef
 ) {
 
-  include '::tcpwrappers'
+  include 'tcpwrappers'
 
   # Requires stdlib >= 2.3.0
   $module_path = get_module_path($module_name)

@@ -30,7 +30,7 @@ class tcpwrappers::params {
   $deny_template = '' # lint:ignore:empty_string_assignment
   $deny_source   = '' # lint:ignore:empty_string_assignment
 
-  ### Application related parameters
+  # Application related parameters
 
   $package = $::operatingsystem ? {
     /(?i:Ubuntu|Debian|Mint)/ => 'libwrap0',
