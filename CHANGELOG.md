@@ -1,3 +1,7 @@
+2020-08-25 (1.2.2)  Brad Koby
+        * Bump stdlib dependency max version
+        * Update PDK template version
+
 2020-06-24 (1.2.1)  Brad Koby
         * Convert to PDK
         * Support puppet 5
